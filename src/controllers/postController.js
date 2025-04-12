@@ -1,0 +1,70 @@
+const Post = require('../models/Post');
+
+
+//creer une publication
+exports.createPost= async (req,res)=>{
+    try{
+        const {content,image}=req.body;
+        const userId= req.user.userId
+        if (!content) return res.status(400).json({error:'Le contenu ne peut pas etre vide'})
+        
+        const post = new Post ({content,image,author:userId})
+        await post.save()
+        
+        res.status(201).json(post);
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'})
+    }
+}
+
+//supprimer un post (seulement par son auteur)
+exports.deletePost= async(req,res)=>{
+    try{
+        const {postId}= req.params;
+        const userId=req.user.userId;
+
+        const post = await Post.findById(postId)
+        if (!post) return res.status(404).json({error:'Post introuvable'});
+
+        if (post.author.toString()!==userId) return res.status(403).json({error:'action non autorisee'})
+        
+        await post.deleteOne();
+        res.json({message:'Post supprime avec succes'})
+    }catch(error){
+        res.status(500).json({error:'erreur serveur'})
+    }
+}
+
+//liker/ deliker un post
+exports.likePost= async(req,res)=>{
+    try{
+        const {postId}=req.params;
+        const userId= req.user.userId;
+
+        const post= await Post.findById(postId);
+        if(!post) return res.status(404).json({error:'Post introuvable'});
+
+        const alreadyLiked= post.likes.includes(userId)
+
+        if (alreadyLiked){
+            post.likes=post.likes.filter(id=>id.toString()!==userId)
+        }else{
+            post.likes.push(userId)
+        }
+        await post.save()
+
+        res.json({message:alreadyLiked? 'Like retire' : 'Post like', likes: post.likes.length})
+    }catch(error){
+        res.status(500).json({error:'erreur serveur'})
+    }
+}
+
+// Recuperer tous les posts
+exports.getAllPosts= async(req,res)=>{
+    try{
+        const posts= await Post.find().populate('author','username avatar').sort({createdAt:-1})
+        res.json(posts);
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'})
+    }
+}

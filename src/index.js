@@ -23,6 +23,9 @@ app.use(morgan('dev'));
 const authRoutes = require("./routes/authRoutes"); 
 app.use("/api/auth", authRoutes)
  
+const postRoutes = require('./routes/postRoutes');  
+app.use('/api/posts', postRoutes); 
+
 app.get('/', (req, res) => { 
     res.send('Bienvenue sur l’API du réseau social !'); 
 }); 
