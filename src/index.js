@@ -26,6 +26,9 @@ app.use("/api/auth", authRoutes)
 const postRoutes = require('./routes/postRoutes');  
 app.use('/api/posts', postRoutes); 
 
+const commentRoutes = require('./routes/commentRoutes') 
+app.use('/api/comments', commentRoutes); 
+
 app.get('/', (req, res) => { 
     res.send('Bienvenue sur l’API du réseau social !'); 
 }); 

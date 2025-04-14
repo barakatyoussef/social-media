@@ -62,7 +62,13 @@ exports.likePost= async(req,res)=>{
 // Recuperer tous les posts
 exports.getAllPosts= async(req,res)=>{
     try{
-        const posts= await Post.find().populate('author','username avatar').sort({createdAt:-1})
+        const posts= await Post.find()
+        .populate('author','username avatar')
+        .populate({
+            path:'comments',
+            populate:{path:'author',select:'username avatar'}
+        })
+        .sort({createdAt:-1})
         res.json(posts);
     }catch(error){
         res.status(500).json({error:'Erreur serveur'})
