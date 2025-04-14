@@ -23,3 +23,20 @@ exports.addComment = async (req,res)=>{
         res.status(500).json({error:'Erreur serveur'});
     }
 }
+
+exports.deleteComment = async(req,res)=>{
+    try{
+        const {commentId}= req.params;
+        const userId= req.user.userId;
+
+        const comment= await Comment.findById(commentId);
+        if(!comment) return res.status(404).json({error:'Commentaire introuvable'})
+        
+        if (comment.author.toString()!==userId) return res.status(403).json({error:'Action non autorisee'})
+        
+        await comment.deleteOne();
+        res.json({message:'Commentaire supprime avec succes'})
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'})
+    }
+}
