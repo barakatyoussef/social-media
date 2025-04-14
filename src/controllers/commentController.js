@@ -1,0 +1,25 @@
+const comment = require('../models/Comment')
+const Post= require('../models/Post');
+
+exports.addComment = async (req,res)=>{
+    try{
+        const { postId }= req.params;
+        const {text}= req.body;
+        const userId=req.user.userId;
+
+        if(!text) return res.status(400).json({error:'Le commentaire ne peut pas etre vide'})
+        
+        const post = await Post.findById(postId);
+        if (!post) return res.status(400).json({error:'Post introuvable'})
+
+        const comment = new Comment({ text, author: userId, post:postId});
+        await comment.save();
+
+        post.comments.push(comment._id)
+        await post.save()
+        
+        res.status(201).json(comment);
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'});
+    }
+}
