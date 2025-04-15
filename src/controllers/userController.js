@@ -71,6 +71,31 @@ exports.getUserFollowing= async(req,res)=>{
         res.json(user.following)
     }catch(error){
         res.status(500).json({error:'erreur serveur'})
+    }
+}
 
+exports.getUser=async(req,res)=>{
+    try{
+        const {userId}= req.params
+        const user= await User.findById(userId).select('-password')
+        
+        res.json(user)
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'})
+    }
+}
+
+exports.updateUser= async(req,res)=>{
+    try{
+        const {userId}= req.params
+        const {username,avatar}= req.body;
+
+        const user= await User.findOneAndUpdate(userId,{username,avatar},{
+            new:true
+        })
+        
+        res.json(user)
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'})
     }
 }
