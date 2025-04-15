@@ -49,3 +49,28 @@ exports.unfollowUser= async(req,res)=>{
         res.status(500).json({error:'Erreur serveur'})
     }
 }
+
+exports.getUserFollowers= async (req,res)=>{
+    try{
+        const {userId}=req.params;
+        const user = await User.findById(userId).populate('followers','username avatar');
+
+        if(!user) return res.status(404).json({error:'Utilisateur introuvable'}) 
+        res.json(user.followers);
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'});
+    }
+}
+
+exports.getUserFollowing= async(req,res)=>{
+    try{
+        const {userId}=req.params
+        const user= await User.findById(userId).populate('following','username avatar')
+
+        if(!user) return res.status(404).json({error:'utilisateur introuvable'})
+        res.json(user.following)
+    }catch(error){
+        res.status(500).json({error:'erreur serveur'})
+
+    }
+}
