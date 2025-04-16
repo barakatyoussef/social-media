@@ -99,3 +99,17 @@ exports.updateUser= async(req,res)=>{
         res.status(500).json({error:'Erreur serveur'})
     }
 }
+
+
+exports.getSuggestedUsers= async(req,res)=>{
+    try{
+        const user= await User.findById(req.user.userId)
+        const suggestedUsers= await User.find({
+            _id:{ $nin:[...user.following,req,user.userId] }
+        }).limit(5);
+
+        res.json(suggestedUsers)
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'})
+    }
+}
