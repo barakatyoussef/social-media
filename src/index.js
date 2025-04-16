@@ -32,6 +32,9 @@ app.use('/api/comments', commentRoutes);
 const userRoutes = require('./routes/userRoutes') 
 app.use('/api/users', userRoutes); 
 
+const searchRoutes = require("./routes/searchRoutes"); 
+app.use("/api/search", searchRoutes)
+
 app.get('/', (req, res) => { 
     res.send('Bienvenue sur l’API du réseau social !'); 
 }); 
