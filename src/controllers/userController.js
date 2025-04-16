@@ -1,4 +1,6 @@
 const User= require('../models/User')
+const Post = require('../models/Post');
+const Comment= require('../models/Comment');
 
 exports.followUser= async(req,res)=>{
     try{
@@ -32,7 +34,7 @@ exports.unfollowUser= async(req,res)=>{
         const { userId}= req.params
         const currentUserId= req.user.userId;
 
-        const userToUnfollow= await User.findById(UserId);
+        const userToUnfollow= await User.findById(userId);
         const currentUser= await User.findById(currentUserId);
 
         if(!userToUnfollow || !currentUser) return res.status(404).json({error:'utilisateur non trouvable'})
@@ -105,7 +107,7 @@ exports.getSuggestedUsers= async(req,res)=>{
     try{
         const user= await User.findById(req.user.userId)
         const suggestedUsers= await User.find({
-            _id:{ $nin:[...user.following,req,user.userId] }
+            _id:{ $nin:[...user.following,req.user.userId] }
         }).limit(5);
 
         res.json(suggestedUsers)
@@ -113,3 +115,81 @@ exports.getSuggestedUsers= async(req,res)=>{
         res.status(500).json({error:'Erreur serveur'})
     }
 }
+
+
+exports.getRecentActivity = async (req, res) => { 
+    try { 
+        const user = await User.findById(req.user.userId)
+        .populate('following', '_id'); 
+
+        if (!user) return res.status(404).json({ error: 'Utilisateur introuvable' }); 
+        const followingIds = user.following.map(f => f._id.toString()); 
+         
+        const posts = await Post.find({ author: { $in: followingIds } }) 
+            .sort({ createdAt: -1 }) 
+            .limit(10) 
+            .populate('author', 'username avatar'); 
+ 
+         
+        const likes = await Post.find({ 
+            author: { $in: followingIds }, likes: { $ne: [] } 
+        }).sort({ updatedAt: -1 }).limit(10) 
+            .populate('likes', 'username avatar') 
+            .populate('author', 'username avatar'); 
+ 
+        const comments = await Comment.find({ post: { $in: posts.map(p => p._id) } }) 
+            .sort({ createdAt: -1 }) 
+            .limit(10) 
+            .populate('author', 'username avatar') 
+            .populate('post', 'content'); 
+ 
+         
+        const follows = await User.find({ _id: { $in: followingIds } }) 
+            .sort({ createdAt: -1 }) 
+            .limit(10) 
+            .populate('followers', 'username avatar'); 
+ 
+        const mentions = await Post.find({ 
+            content: new RegExp(`@${user.username}`, 'i') 
+        }) 
+            .sort({ createdAt: -1 }) 
+            .limit(10) 
+            .populate('author', 'username avatar'); 
+ 
+        
+        const activities = [ 
+            ...posts.map(post => ({ 
+                _id: post._id, type: 'post', 
+                author: post.author, 
+                post: { content: post.content }, createdAt: post.createdAt, 
+            })), 
+            ...likes.flatMap(post => post.likes.map(likeUser => ({ 
+                _id: `${post._id}-${likeUser._id}`, type: 'like', 
+                author: likeUser, 
+                post: { content: post.content }, createdAt: post.updatedAt, 
+            })) 
+            ), 
+            ...comments.map(comment => ({ 
+                _id: comment._id, type: 'comment', 
+                author: comment.author, 
+                post: { content: comment.post.content }, createdAt: comment.createdAt, 
+            })), 
+            ...follows.flatMap(user => user.followers.map(follower => ({ 
+ 
+                _id: `${user._id}-${follower._id}`, type: 'follow', 
+                author: follower, createdAt: user.createdAt, 
+            })) 
+            ), 
+            ...mentions.map(post => ({ 
+                _id: post._id, type: 'mention', 
+                author: post.author, 
+                post: { content: post.content }, createdAt: post.createdAt, 
+            })), 
+        ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); 
+ 
+        res.json(activities); 
+    } catch (error) { 
+        console.error(error); 
+        res.status(500).json({ error: 'Erreur serveur' }); 
+} 
+};
