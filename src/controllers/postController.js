@@ -9,7 +9,15 @@ exports.createPost= async (req,res)=>{
         const userId= req.user.userId
         if (!content) return res.status(400).json({error:'Le contenu ne peut pas etre vide'})
         
-        const post = new Post ({content,image,author:userId})
+        const hashtags = content.match(/#\w+/g) || []; 
+
+        const post = new Post({  
+            content,  
+            image,  
+            author: userId,  
+            hashtags: hashtags.map(tag => tag.toLowerCase())  
+        });
+
         await post.save()
         
         res.status(201).json(post);
@@ -122,16 +130,19 @@ exports.getTrendingTopics = async (req,res)=>{
                 $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
             }
         })
+        
         let hashtags={};
 
         posts.forEach(post=>{
             post.hashtags.forEach(tag=>{
                 hashtags[tag]=(hashtags[tag] || 0) +1
+                
             })
+
+
         })
 
         const trending= Object.entries(hashtags).sort((a,b)=>b[1]-a[1]).slice(0,5);
-
         res.json(trending.map(t=>t[0]))
     }catch(error){
         res.status(500).json({eror:'Erreur serveur'})

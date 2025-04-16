@@ -1,6 +1,7 @@
 const express = require('express')
 const {authenticate}= require ('../middleware/authMiddleware');
-const {createPost, deletePost,likePost,getAllPosts, getUserPosts,getFeed,getTrendingTopics}=require('../controllers/postController');
+const {createPost, deletePost,likePost,getAllPosts, getUserPosts,
+    getFeed,getTrendingTopics}=require('../controllers/postController');
 
 const router=express.Router()
 
