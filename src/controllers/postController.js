@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const User= require('../models/User');
 
 
 //creer une publication
@@ -85,6 +86,29 @@ exports.getUserPosts= async(req,res)=>{
             populate:{path:'author',select:'username avatar'}
         })
         .sort({created: -1});
+        res.json(posts)
+    }catch(error){
+        res.status(500).json({error:'Erreur serveur'})
+    }
+}
+
+exports.getFeed= async(req,res)=>{
+    try{
+        const userId=req.user.userId
+        
+        const user= await User.findById(userId);
+        if(!user) return res.status(404).json({error:'Utilisateur introuvable'})
+        
+        const posts= await Post.find({
+            author:{$in: [...user.following, userId]}
+        })
+            .populate('author','username avatar')
+            .populate({
+                path:'comments',
+                populate:{path:'auuthor',select:'username avatar'}
+            })
+            .sort({createdAt: -1})
+
         res.json(posts)
     }catch(error){
         res.status(500).json({error:'Erreur serveur'})

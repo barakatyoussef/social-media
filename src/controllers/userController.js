@@ -8,7 +8,7 @@ exports.followUser= async(req,res)=>{
         if(userId=== currentUserId) return res.status(400).json({error:'Vous ne pouvez pas suivre vous-meme'})
         
         const userToFollow= await User.findById(userId)
-        const currentUser= await user.findById(currentUserId)
+        const currentUser= await User.findById(currentUserId)
 
         if(!userToFollow || !currentUser) return res.status(404).json({error:'Utilisateur introuvable'});
 
@@ -90,7 +90,7 @@ exports.updateUser= async(req,res)=>{
         const {userId}= req.params
         const {username,avatar}= req.body;
 
-        const user= await User.findOneAndUpdate(userId,{username,avatar},{
+        const user= await User.findByIdAndUpdate(userId,{username,avatar},{
             new:true
         })
         
