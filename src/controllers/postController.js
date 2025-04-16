@@ -105,12 +105,36 @@ exports.getFeed= async(req,res)=>{
             .populate('author','username avatar')
             .populate({
                 path:'comments',
-                populate:{path:'auuthor',select:'username avatar'}
+                populate:{path:'author',select:'username avatar'}
             })
             .sort({createdAt: -1})
 
         res.json(posts)
     }catch(error){
         res.status(500).json({error:'Erreur serveur'})
+    }
+}
+
+exports.getTrendingTopics = async (req,res)=>{
+    try{
+        const posts= await Post.find({
+            createdAt:{
+                $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+            }
+        })
+        let hashtags={};
+
+        posts.forEach(post=>{
+            post.hashtags.forEach(tag=>{
+                hashtags[tag]=(hashtags[tag] || 0) +1
+            })
+        })
+
+        const trending= Object.entries(hashtags).sort((a,b)=>b[1]-a[1]).slice(0,5);
+
+        res.json(trending.map(t=>t[0]))
+    }catch(error){
+        res.status(500).json({eror:'Erreur serveur'})
+
     }
 }
