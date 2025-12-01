@@ -71,7 +71,7 @@ Voici les routes principales accessibles via `http://localhost:5000` :
 **Youssef Barakat**
 * Projet réalisé dans le cadre académique.
 * [LinkedIn](https://www.linkedin.com/)
-* [GitHub](https://github.com/)
+* [GitHub](https://github.com/barakatyoussef)
 
 
 
