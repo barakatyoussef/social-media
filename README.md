@@ -50,23 +50,28 @@ npm run dev
 npm start
 ```
 
-### 📡 Endpoints de l'API
-```
-Domaine,Méthode,Endpoint,Description
-Auth,POST,/api/auth/register,Inscription d'un nouvel utilisateur
-,POST,/api/auth/login,Connexion (retourne un Token JWT)
-Posts,GET,/api/posts,Récupérer le fil d'actualité
-,POST,/api/posts,Créer une publication
-,DELETE,/api/posts/:id,Supprimer une publication
-Users,GET,/api/users/:id,Voir le profil d'un utilisateur
-,PUT,/api/users/:id,Mettre à jour son profil
-Comments,POST,/api/comments,Ajouter un commentaire
-Search,GET,/api/search,Rechercher un utilisateur ou un post
-```
+## 📡 Endpoints de l'API
 
-👤 Auteur
-* **Youssef Barakat
+Voici les routes principales accessibles via `http://localhost:5000` :
 
+| Domaine | Méthode | Endpoint | Description |
+| :--- | :--- | :--- | :--- |
+| **Auth** | `POST` | `/api/auth/register` | Inscription d'un nouvel utilisateur |
+| | `POST` | `/api/auth/login` | Connexion (retourne un Token JWT) |
+| **Posts** | `GET` | `/api/posts` | Récupérer le fil d'actualité |
+| | `POST` | `/api/posts` | Créer une publication |
+| | `DELETE`| `/api/posts/:id` | Supprimer une publication |
+| **Users** | `GET` | `/api/users/:id` | Voir le profil d'un utilisateur |
+| | `PUT` | `/api/users/:id` | Mettre à jour son profil |
+| **Comments**| `POST` | `/api/comments` | Ajouter un commentaire |
+| **Search** | `GET` | `/api/search` | Rechercher un utilisateur ou un post |
+
+## 👤 Auteur
+
+**Youssef Barakat**
+* Projet réalisé dans le cadre académique.
+* [LinkedIn](https://www.linkedin.com/)
+* [GitHub](https://github.com/)
 
 
 
