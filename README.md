@@ -2,7 +2,7 @@
 
 ![NodeJS](https://img.shields.io/badge/Node.js-18.x-green) ![Express](https://img.shields.io/badge/Express.js-4.x-lightgrey) ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green)
 
-> Une API REST robuste pour un réseau social, développée dans le cadre d'un projet universitaire. Elle gère l'authentification, les publications, les commentaires et la recherche d'utilisateurs.
+> Une API REST robuste pour un réseau social. Elle gère l'authentification, les publications, les commentaires et la recherche d'utilisateurs.
 
 ## ✨ Fonctionnalités Principales
 
@@ -27,4 +27,40 @@ Suivez ces étapes pour lancer le serveur localement :
 ### 1. Cloner le projet
 ```bash
 git clone [https://github.com/ton-user/nom-du-repo.git](https://github.com/ton-user/nom-du-repo.git)
-cd nom-du-repo ```
+cd nom-du-repo ```.
+
+
+### 2. Installer les dépendances
+npm install
+
+### 3. Configuration d'environnement (.env)
+PORT=5000
+MONGO_URI=votre_lien_mongodb_atlas
+JWT_SECRET=votre_cle_secrete_jwt
+
+### 4. Lancer le serveur
+# Mode développement (avec logs détaillés)
+npm run dev
+
+# Mode production
+npm start
+
+📡 Endpoints de l'API
+Voici les routes principales accessibles via http://localhost:5000 :
+Domaine Méthode Endpoint Description
+AuthPOST/api/auth/register Inscription d'un nouvel utilisateur
+POST/api/auth/login Connexion (retourne un Token JWT)
+PostsGET/api/posts Récupérer le fil d'actualité
+POST/api/posts Créer une publication
+DELETE/api/posts/:id Supprimer une publicationUsers
+GET/api/users/:id Voir le profil d'un utilisateur
+PUT/api/users/:id Mettre à jour son profil
+CommentsPOST/api/comments Ajouter un commentaire
+SearchGET/api/search Rechercher un utilisateur ou un post
+
+👤 Auteur
+Youssef Barakat
+
+
+
+
