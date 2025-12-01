@@ -27,36 +27,40 @@ Suivez ces étapes pour lancer le serveur localement :
 ### 1. Cloner le projet
 ```bash
 git clone [https://github.com/ton-user/nom-du-repo.git](https://github.com/ton-user/nom-du-repo.git)
-cd nom-du-repo ```.
+cd nom-du-repo
+```
 
 
-### 2. Installer les dépendances
-npm install
+2. Installer les dépendances
+```npm install```
 
-### 3. Configuration d'environnement (.env)
+3. Configuration d'environnement (.env)
+```
 PORT=5000
 MONGO_URI=votre_lien_mongodb_atlas
 JWT_SECRET=votre_cle_secrete_jwt
+```
 
-### 4. Lancer le serveur
+4. Lancer le serveur
+```
 # Mode développement (avec logs détaillés)
 npm run dev
 
 # Mode production
 npm start
+```
 
 📡 Endpoints de l'API
-Voici les routes principales accessibles via http://localhost:5000 :
-Domaine Méthode Endpoint Description
-AuthPOST/api/auth/register Inscription d'un nouvel utilisateur
-POST/api/auth/login Connexion (retourne un Token JWT)
-PostsGET/api/posts Récupérer le fil d'actualité
-POST/api/posts Créer une publication
-DELETE/api/posts/:id Supprimer une publicationUsers
-GET/api/users/:id Voir le profil d'un utilisateur
-PUT/api/users/:id Mettre à jour son profil
-CommentsPOST/api/comments Ajouter un commentaire
-SearchGET/api/search Rechercher un utilisateur ou un post
+Domaine,Méthode,Endpoint,Description
+Auth,POST,/api/auth/register,Inscription d'un nouvel utilisateur
+,POST,/api/auth/login,Connexion (retourne un Token JWT)
+Posts,GET,/api/posts,Récupérer le fil d'actualité
+,POST,/api/posts,Créer une publication
+,DELETE,/api/posts/:id,Supprimer une publication
+Users,GET,/api/users/:id,Voir le profil d'un utilisateur
+,PUT,/api/users/:id,Mettre à jour son profil
+Comments,POST,/api/comments,Ajouter un commentaire
+Search,GET,/api/search,Rechercher un utilisateur ou un post
 
 👤 Auteur
 Youssef Barakat
