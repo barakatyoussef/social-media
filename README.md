@@ -42,7 +42,7 @@ JWT_SECRET=votre_cle_secrete_jwt
 ```
 
 ### 4. Lancer le serveur
-```
+```bash
 # Mode développement (avec logs détaillés)
 npm run dev
 
