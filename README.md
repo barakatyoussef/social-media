@@ -26,7 +26,7 @@ Suivez ces étapes pour lancer le serveur localement :
 
 ### 1. Cloner le projet
 ```bash
-git clone [https://github.com/ton-user/nom-du-repo.git](https://github.com/ton-user/nom-du-repo.git)
+git clone [https://github.com/barakatyoussef/social-network-api.git](https://github.com/barakatyoussef/social-network-api.git)
 cd nom-du-repo
 ```
 
@@ -70,7 +70,6 @@ Voici les routes principales accessibles via `http://localhost:5000` :
 
 **Youssef Barakat**
 * Projet réalisé dans le cadre académique.
-* [LinkedIn](https://www.linkedin.com/)
 * [GitHub](https://github.com/barakatyoussef)
 
 
