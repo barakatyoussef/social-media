@@ -69,7 +69,6 @@ Voici les routes principales accessibles via `http://localhost:5000` :
 ## 👤 Auteur
 
 **Youssef Barakat**
-* Projet réalisé dans le cadre académique.
 * [GitHub](https://github.com/barakatyoussef)
 
 
